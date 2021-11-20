@@ -8,6 +8,7 @@ _(This image is [not made by me](https://twitter.com/whoisaldeka/status/11651480
 ## Components
 * **MagnumVM**: a virtual machine for executing Magna (binary executable) files.
 * **Scriba**: a library for writing Magna files.
+* **Magnum Common**: a library with common constants.
 
 ## Specifications
 ### Magna (binary executable)
@@ -73,6 +74,7 @@ Each instruction is 32-bits, with the first 8 being the opcode. Immediates follo
 
 ##### System calls
 | System call | System call opcode | Description
+| :------ | :------ | :------
 | `put_b` | `0x00` | Prints value of byte as a `u8`.
 | `put_c` | `0x10` | Prints byte as an ASCII char.
 
