@@ -6,8 +6,8 @@ MagnumVM is a custom process virtual machine. Made for [queer_hack 2021](https:/
 _(This image is [not made by me](https://twitter.com/whoisaldeka/status/1165148059484880896) and is licensed under CC-BY. Unfortunately there is not a bisexual version.)_
 
 ## Components
-* **MagnumVM**: a virtual machine for executing custom Magna files.
-* **Scriba**: a library for writing binary Magna files.
+* **MagnumVM**: a virtual machine for executing Magna (binary executable) files.
+* **Scriba**: a library for writing Magna files.
 
 ## Specifications
 ### Magna (binary executable)
@@ -20,13 +20,13 @@ Magna is loosely inspired by [ELF](https://en.wikipedia.org/wiki/Executable_and_
 | :------ | :------ | :------
 | 0x0 | 3 | `MVM` in ASCII/`0x4D564D` in hex; the [file signature/magic number](https://en.wikipedia.org/wiki/List_of_file_signatures).
 | 0x3 | 1 | `0x0`; the target version of MagnumVM.
-| 0x4 | 4 | `0x1D`; location (in bytes) of text section.
-| 0x8 | 4 | Size (in bytes) of text section.
-| 0xC | 4 | Location of read-only section.
-| 0x10 | 4 | Size of read-only section.
-| 0x14 | 4 | Location of initialized writable section.
-| 0x18 | 4 | Size of initialized writable section.
-| 0x1C | 4 | Size of uninitialized writable memory.
+| 0x4 | 8 | `0x35`; starting location (in bytes) of text section.
+| 0xC | 8 | Size (in bytes) of text section.
+| 0x14 | 8 | Location of read-only section.
+| 0x1C | 8 | Size of read-only section.
+| 0x24 | 8 | Location of initialized writable section.
+| 0x2C | 8 | Size of initialized writable section.
+| 0x34 | 8 | Size of uninitialized writable memory.
 
 #### Text section
 The text section is right after the header, so it should always have the offset `0x1D`. This section contains the actual instructions to be executed by MagnumVM. Each instruction is 32-bits.
@@ -47,7 +47,23 @@ Memory is divided into two pools: text and data. In the future, it could also ha
 The text section of memory is read-only. The data section of memory is divided into the read-only section, the global writable section, and the stack.
 
 #### Instructions
-I'm not entirely sure how this will work just yet, but we'll see. Each instruction should be 32-bits, little endian. MagnumVM is basically a stack machine.
+Each instruction is 32-bits, with the first 8 being the opcode. Literals follow little endian.
+
+| Instruction type | Format | Description
+| :------ | :------ | :------
+| I-type | `opcode` | Yeah idk yet...
+
+| Instruction | Opcode | Arguments | Description
+| :------ | :------ | :------ | :------
+| `nop` | `0x00` | N/A | No operation.
+| `loadi_b` | `0x01` | Immediate (value) | Loads immediate byte onto the stack. Only `inst[0..7]` is loaded, middle bytes of instruction are ignored.
+| `loadi_2b` | `0x02` | Immediate (value) | Loads immediate double byte onto the stack. Only `inst[0..15]` is loaded, middle bytes of instruction are ignored.
+| `loadi_4b` | `0x03` | Immediate (value) | Loads immediate quadruple byte onto the stack.
+| `loadi_8b` | `0x04` | Immediate (value) | Loads immediate octuple byte onto the stack.
+| `load_b` | `0x10` | Immediate (address) | Loads byte from memory address onto the stack.
+| `load_2b` | `0x11` | Immediate (address) | Loads double byte from memory address onto the stack.
+| `load_4b` | `0x12` | Immediate (address) | Loads quadruple byte from memory address onto the stack.
+| `load_8b` | `0x13` | Immediate (address) | Loads octuple byte from memory address onto the stack.
 
 ## Technologies used
 * [Rust](https://github.com/rust-lang/rust)

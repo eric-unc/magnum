@@ -1,6 +1,6 @@
 [workspace]
 members = [
+	"magnum-common",
 	"magnumvm",
 	"scriba"
 ]
-
