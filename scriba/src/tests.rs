@@ -103,5 +103,5 @@ fn one_plus_one() {
 	file.by_ref().take(4).read(&mut hlt).unwrap();
 	assert_eq!(u32::from_le_bytes(hlt), (OPCODE_HLT as u32) << (8 * 3));
 
-	//fs::remove_file(path).unwrap();
+	fs::remove_file(path).unwrap();
 }
