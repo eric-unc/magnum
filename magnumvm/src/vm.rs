@@ -1,6 +1,6 @@
 use std::{fs, io};
 use magnum_common::*;
-use std::io::{Read};
+use std::io::{BufReader, Read};
 
 pub struct VM {
 	text: Vec<u32>,
@@ -14,6 +14,7 @@ pub struct VM {
 impl VM {
 	pub fn load(path: &str) -> io::Result<VM> {
 		let mut file = fs::File::open(path)?;
+		let mut file = BufReader::new(file);
 
 		let mut file_sig = [0u8; 3];
 		file.by_ref().take(3).read(&mut file_sig)?;
