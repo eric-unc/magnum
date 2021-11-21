@@ -24,7 +24,8 @@ pub enum Instruction {
 	Store(u8, u16),
 	Pop(u8),
 	FuncB(Function),
-	Sys(SystemCall)
+	Sys(SystemCall),
+	Hlt
 }
 
 use Instruction::*;
@@ -84,7 +85,8 @@ impl Magna {
 			Store(size, addr) => e(OPCODE_STORE) + ((size as u32) << (8 * 1)) + addr as u32,
 			Pop(size) => e(OPCODE_POP) + size as u32,
 			FuncB(func) => e(OPCODE_FUNC_B) + func_opcode(func),
-			Sys(call) => e(OPCODE_SYS) + call_opcode(call)
+			Sys(call) => e(OPCODE_SYS) + call_opcode(call),
+			Hlt => e(OPCODE_HLT)
 		};
 
 		self.add_inst_from_u32(inst);

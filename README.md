@@ -63,6 +63,7 @@ Each instruction is 32-bits, with the first 8 being the opcode. Immediates follo
 | `pop` | `0x20` | Immediate (amount of bytes): `inst[0..7]` | Pops a byte/bytes from stack.
 | `func_b` | `0x30` | Function (opcode): `inst[0..7]` | Treats byte(s) from stack as `u8` and performs function from values (see functions README section).
 | `sys` | `0x40` | System call (opcode): `inst[0..7]` | Performs system call (see system calls README section).
+| `hlt` | `0x50` | N/A | Halts execution.
 
 ##### Functions
 | Function | Function opcode | Description

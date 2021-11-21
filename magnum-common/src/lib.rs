@@ -10,6 +10,7 @@ pub const OPCODE_STORE: u8 = 0x15;
 pub const OPCODE_POP: u8 = 0x20;
 pub const OPCODE_FUNC_B: u8 = 0x30;
 pub const OPCODE_SYS: u8 = 0x40;
+pub const OPCODE_HLT: u8 = 0x50;
 
 // Function opcodes
 pub const OPCODE_ADD: u8 = 0x00;
