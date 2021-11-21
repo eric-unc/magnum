@@ -1,6 +1,8 @@
 use std::fs::File;
 use std::io::Write;
 
+use magnum_common::*;
+
 #[cfg(test)]
 mod tests;
 
@@ -11,9 +13,85 @@ pub struct Magna {
 	global_uninit_size: usize
 }
 
+pub enum Instruction {
+	Nop,
+	LoadIB(u8),
+	LoadI2B(u16),
+	LoadI4B(u32),
+	LoadI8B(u32),
+	Load(u8, u16),
+	Loads(u8, u16),
+	Store(u8, u16),
+	Pop(u8),
+	FuncB(Function),
+	Sys(SystemCall)
+}
+
+use Instruction::*;
+
+pub enum Function {
+	Add,
+	Sub,
+	Mul,
+	Div
+}
+
+use Function::*;
+
+pub enum SystemCall {
+	PutB,
+	PutC
+}
+
+use SystemCall::*;
+
 impl Magna {
 	pub fn new() -> Magna {
 		Magna { text: vec![], read_only: vec![], init_writable: vec![], global_uninit_size: 0 }
+	}
+
+	pub fn add_inst(&mut self, inst: Instruction) {
+		/// "Empty" function, just to make our lives a bit easier.
+		/// Returns an empty instruction with just the opcode.
+		fn e(opcode: u8) -> u32 {
+			(opcode as u32) << (8 * 3)
+		}
+
+		fn func_opcode(func: Function) -> u32 {
+			(match func {
+				Add => OPCODE_ADD,
+				Sub => OPCODE_SUB,
+				Mul => OPCODE_MUL,
+				Div => OPCODE_DIV
+			}) as u32
+		}
+
+		fn call_opcode(call: SystemCall) -> u32 {
+			(match call {
+				PutB => OPCODE_PUT_B,
+				PutC => OPCODE_PUT_C
+			}) as u32
+		}
+
+		let inst: u32 = match inst {
+			Nop => e(OPCODE_NOP),
+			LoadIB(im)=> e(OPCODE_LOADI_B) + im as u32,
+			LoadI2B(im)=> e(OPCODE_LOADI_2B) + im as u32,
+			LoadI4B(im)=> e(OPCODE_LOADI_4B) + (0xFFFFFF & im as u32),
+			LoadI8B(im)=> e(OPCODE_LOADI_8B) + (0xFFFFFF & im as u32),
+			Load(size, addr) => e(OPCODE_LOAD) + ((size as u32) << (8 * 1)) + addr as u32,
+			Loads(size, offset) => e(OPCODE_LOADS) + ((size as u32) << (8 * 1)) + offset as u32,
+			Store(size, addr) => e(OPCODE_STORE) + ((size as u32) << (8 * 1)) + addr as u32,
+			Pop(size) => e(OPCODE_POP) + size as u32,
+			FuncB(func) => e(OPCODE_FUNC_B) + func_opcode(func),
+			Sys(call) => e(OPCODE_SYS) + call_opcode(call)
+		};
+
+		self.add_inst_from_u32(inst);
+	}
+
+	pub fn add_inst_from_u32(&mut self, inst: u32) {
+		self.text.push(inst);
 	}
 
 	pub fn write_file(&self, path: &str) -> std::io::Result<()> {
@@ -74,4 +152,3 @@ impl Magna {
 		Ok(())
 	}
 }
-

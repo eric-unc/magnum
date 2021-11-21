@@ -58,7 +58,7 @@ Each instruction is 32-bits, with the first 8 being the opcode. Immediates follo
 | `loadi_4b` | `0x03` | Immediate (value): `inst[0..23]` | Loads immediate quadruple byte onto stack. Sign not carried.
 | `loadi_8b` | `0x04` | Immediate (value): `inst[0..23]` | Loads immediate octuple byte onto stack. Sign not carried.
 | `load` | `0x10` | Immediate (size): `inst[16..23]`, immediate (address): `inst[0..15]` | Loads a byte/bytes from memory address onto stack.
-| `loads` | `0x11` | Immediate (size): `inst[16..23]`, immediate (address): `inst[0..15]` | Loads a byte/bytes from offset of stack base onto stack.
+| `loads` | `0x11` | Immediate (size): `inst[16..23]`, immediate (offset): `inst[0..15]` | Loads a byte/bytes from offset of stack base onto stack.
 | `store` | `0x15` | Immediate (size): `inst[16..23]`, immediate (address): `inst[0..15]` | Store a byte/bytes from stack (popping them) to memory location.
 | `pop` | `0x20` | Immediate (amount of bytes): `inst[0..7]` | Pops a byte/bytes from stack.
 | `func_b` | `0x30` | Function (opcode): `inst[0..7]` | Treats byte(s) from stack as `u8` and performs function from values (see functions README section).
