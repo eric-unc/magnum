@@ -13,29 +13,28 @@ pub struct VM {
 
 impl VM {
 	pub fn load(path: &str) -> io::Result<VM> {
-		//let vm = VM { text: vec![], data: vec![], stack_base: 0};
-
 		let mut file = fs::File::open(path)?;
 
 		let mut file_sig = [0u8; 3];
 		file.by_ref().take(3).read(&mut file_sig)?;
 
-		if file_sig.ne("MVM".as_bytes()) {
-			panic!("File signature does not match!");
+		if file_sig.ne(b"MVM") {
+			panic!("File signature does not match! Found {:?}.", file_sig);
 		}
 
 		let mut version = [0u8];
 		file.by_ref().take(3).read(&mut version)?;
 
 		if version.ne(&[0]) {
-			panic!("Version does not match!");
+			panic!("Version does not match! Found {:?}.", version);
 		}
 
 		let mut text_loc = [0u8; 8];
 		file.by_ref().take(8).read(&mut text_loc)?;
 
-		if usize::from_le_bytes(text_loc).ne(&0x35usize) {
-			panic!("Version does not match!");
+		let text_loc = usize::from_le_bytes(text_loc);
+		if text_loc.ne(&0x35usize) {
+			panic!("Text location does not match! Found {}.", text_loc);
 		}
 
 		let mut text_size = [0u8; 8];
@@ -43,7 +42,7 @@ impl VM {
 		let text_size = usize::from_le_bytes(text_size);
 
 		if text_size % 4 != 0 {
-			panic!("Instructions must be consistently 32-bit!");
+			panic!("Instructions must be consistently 32-bit! Size is {}.", text_size);
 		}
 
 		//let mut text = Vec::with_capacity(text_size);
@@ -223,6 +222,9 @@ impl VM {
 						}
 						_ => panic!("Unknown system call {}!", call)
 					}
+				}
+				OPCODE_HLT => {
+					std::process::exit(0);
 				}
 				_ => panic!("Unknown opcode {}!", opcode)
 			}

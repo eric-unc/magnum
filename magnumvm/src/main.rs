@@ -5,6 +5,9 @@ use std::{env, fs, io, io::Read};
 use magnum_common::*;
 use vm::VM;
 
+#[cfg(test)]
+mod tests;
+
 fn main() {
 	let args: Vec<String> = env::args().collect();
 

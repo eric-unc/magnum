@@ -55,7 +55,7 @@ fn one_plus_one() {
 
 	let mut text_size = [0u8; 8];
 	file.by_ref().take(8).read(&mut text_size).unwrap();
-	assert_eq!(usize::from_le_bytes(text_size), insts.len());
+	assert_eq!(usize::from_le_bytes(text_size), insts.len() * 4);
 
 	// Note that there is not any global data in this example.
 	let mut readonly_loc = [0u8; 8];

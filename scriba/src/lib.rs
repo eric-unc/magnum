@@ -116,7 +116,7 @@ impl Magna {
 			file.write_all(&offset_text.to_le_bytes())?;
 
 			// Size of text section
-			file.write_all(&self.text.len().to_le_bytes())?;
+			file.write_all(&(self.text.len() * 4).to_le_bytes())?;
 
 			// Location of read-only section
 			let offset_read_only = offset_text + self.text.len();
