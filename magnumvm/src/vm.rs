@@ -191,7 +191,7 @@ impl VM {
 						OPCODE_SUB => {
 							let a = self.data.pop().unwrap();
 							let b = self.data.pop().unwrap();
-							self.data.push(a - b);
+							self.data.push(b - a);
 						}
 						OPCODE_MUL => {
 							let a = self.data.pop().unwrap();
@@ -201,7 +201,7 @@ impl VM {
 						OPCODE_DIV => {
 							let a = self.data.pop().unwrap();
 							let b = self.data.pop().unwrap();
-							self.data.push(a / b);
+							self.data.push(b / a);
 						}
 						_ => panic!("Unknown function {}!", func)
 					}
