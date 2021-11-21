@@ -1,6 +1,8 @@
 # MagnumVM
 MagnumVM is a custom process virtual machine. Made for [queer_hack 2021](https://queer-hack21.devpost.com/).
 
+Unfortunately, suffering from [a grave issue](https://github.com/eric-unc/magnum/issues/1), this project is left in a completely non-functional state.
+
 <img src="gayrust.jpg" width="200">
 
 _(This image is [not made by me](https://twitter.com/whoisaldeka/status/1165148059484880896) and is licensed under CC-BY. Unfortunately there is not a bisexual version.)_
