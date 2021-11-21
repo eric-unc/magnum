@@ -1,6 +1,6 @@
 use std::{fs, io};
 use magnum_common::*;
-use std::io::Read;
+use std::io::{Read};
 
 pub struct VM {
 	text: Vec<u32>,
