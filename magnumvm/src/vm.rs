@@ -1,5 +1,5 @@
 use std::{fs, io};
-use magnum_common::{OPCODE_LOADI_B, OPCODE_NOP};
+use magnum_common::*;
 use std::io::Read;
 
 pub struct VM {
@@ -113,7 +113,118 @@ impl VM {
 				OPCODE_NOP => {}
 				OPCODE_LOADI_B => {
 					let im = (inst & 0xFF) as u8;
+					self.data.push(im);
 				}
+				OPCODE_LOADI_2B => {
+					let im1 = (inst & 0xFF) as u8;
+					let im2 = ((inst & 0xFF00) >> 8) as u8;
+					self.data.push(im2);
+					self.data.push(im1);
+				}
+				OPCODE_LOADI_4B => {
+					let im1 = (inst & 0xFF) as u8;
+					let im2 = ((inst & 0xFF00) >> 8) as u8;
+					let im3 = ((inst & 0xFF0000) >> (8 * 2)) as u8;
+					self.data.push(0);
+					self.data.push(im3);
+					self.data.push(im2);
+					self.data.push(im1);
+				}
+				OPCODE_LOADI_8B => {
+					let im1 = (inst & 0xFF) as u8;
+					let im2 = ((inst & 0xFF00) >> 8) as u8;
+					let im3 = ((inst & 0xFF0000) >> (8 * 2)) as u8;
+					self.data.push(0);
+					self.data.push(0);
+					self.data.push(0);
+					self.data.push(0);
+					self.data.push(0);
+					self.data.push(im3);
+					self.data.push(im2);
+					self.data.push(im1);
+				}
+				OPCODE_LOAD => {
+					let size = ((inst & 0xFF0000) >> (8 * 2)) as u8;
+					let addr = (inst & 0xFFFF) as u16;
+
+					// the casting is a real PITA
+					let size = size as usize;
+					let addr = addr as usize;
+
+					if self.readable_start < addr as usize || addr + size - 1 < self.data.len() {
+						panic!("Invalid address!");
+					}
+
+					for i in addr..(addr + size) {
+						self.data.push(self.data[i]);
+					}
+				}
+				OPCODE_STORE => {
+					let size = ((inst & 0xFF0000) >> (8 * 2)) as u8;
+					let addr = (inst & 0xFFFF) as u16;
+
+					// the casting is a real PITA
+					let size = size as usize;
+					let addr = addr as usize;
+
+					if self.readable_start < addr as usize || addr + size - 1 < self.data.len() {
+						panic!("Invalid address!");
+					}
+
+					for i in addr..(addr + size) {
+						self.data[i] = self.data.pop().unwrap();
+					}
+				}
+				OPCODE_POP => {
+					let size = (inst & 0xFF) as u8;
+
+					for _ in 0..size {
+						self.data.pop();
+					}
+				}
+				OPCODE_FUNC_B => {
+					let func = (inst & 0xFF) as u8;
+
+					match func {
+						OPCODE_ADD => {
+							let a = self.data.pop().unwrap();
+							let b = self.data.pop().unwrap();
+							self.data.push(a + b);
+						}
+						OPCODE_SUB => {
+							let a = self.data.pop().unwrap();
+							let b = self.data.pop().unwrap();
+							self.data.push(a - b);
+						}
+						OPCODE_MUL => {
+							let a = self.data.pop().unwrap();
+							let b = self.data.pop().unwrap();
+							self.data.push(a * b);
+						}
+						OPCODE_DIV => {
+							let a = self.data.pop().unwrap();
+							let b = self.data.pop().unwrap();
+							self.data.push(a / b);
+						}
+						_ => panic!("Unknown function {}!", func)
+					}
+				}
+				OPCODE_SYS => {
+					let call = (inst & 0xFF) as u8;
+
+					match call {
+						OPCODE_PUT_B => {
+							let b = self.data.pop().unwrap();
+							println!("{}", b);
+						}
+						OPCODE_PUT_C => {
+							let c = self.data.pop().unwrap() as char;
+							println!("{}", c);
+						}
+						_ => panic!("Unknown system call {}!", call)
+					}
+				}
+				_ => panic!("Unknown opcode {}!", opcode)
 			}
 
 			self.program_counter += 1;
