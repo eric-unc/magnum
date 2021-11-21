@@ -13,6 +13,7 @@ pub struct Magna {
 	global_uninit_size: usize
 }
 
+#[derive(Clone, Copy)]
 pub enum Instruction {
 	Nop,
 	LoadIB(u8),
@@ -30,6 +31,7 @@ pub enum Instruction {
 
 use Instruction::*;
 
+#[derive(Clone, Copy)]
 pub enum Function {
 	Add,
 	Sub,
@@ -39,6 +41,7 @@ pub enum Function {
 
 use Function::*;
 
+#[derive(Clone, Copy)]
 pub enum SystemCall {
 	PutB,
 	PutC

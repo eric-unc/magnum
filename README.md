@@ -48,7 +48,7 @@ Memory is divided into two pools: text and data. In the future, it could also ha
 The text section of memory is read-only. The data section of memory is divided into the read-only section, the global writable section, and the stack.
 
 #### Instructions
-Each instruction is 32-bits, with the first 8 being the opcode. Immediates follow little endian.
+Each instruction is 32-bits, with the first 8 being the opcode. Note all of this is little endian.
 
 | Instruction | Opcode | Arguments | Description
 | :------ | :------ | :------ | :------
