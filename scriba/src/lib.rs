@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::Write;
+use std::io;
 
 use magnum_common::*;
 
@@ -99,7 +100,7 @@ impl Magna {
 		self.text.push(inst);
 	}
 
-	pub fn write_file(&self, path: &str) -> std::io::Result<()> {
+	pub fn write_file(&self, path: &str) -> io::Result<()> {
 		let mut file = File::create(path)?;
 
 		// Header
