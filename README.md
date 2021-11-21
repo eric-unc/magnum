@@ -45,7 +45,7 @@ Because uninitialized writable data is uninitialized, it does not need a section
 #### Memory organization
 Memory is divided into two pools: text and data. In the future, it could also have a heap, but implementing a garbage collector is a lot of work.
 
-The text section of memory is read-only. The data section of memory is divided into the read-only section, the global writable section, and the stack.
+The text pool of memory is read-only. The data section of memory is divided into the read-only section, the global writable section, and the stack.
 
 #### Instructions
 Each instruction is 32-bits, with the first 8 being the opcode. Note all of this is little endian.
@@ -68,10 +68,10 @@ Each instruction is 32-bits, with the first 8 being the opcode. Note all of this
 ##### Functions
 | Function | Function opcode | Description
 | :------ | :------ | :------
-| `add` | `0x00` |
-| `sub` | `0x01` | 
-| `mul` | `0x02` |
-| `div` | `0x03` |
+| `add` | `0x00` | Addition.
+| `sub` | `0x01` | Subtracion.
+| `mul` | `0x02` | Multiplication.
+| `div` | `0x03` | Division.
 
 ##### System calls
 | System call | System call opcode | Description
