@@ -212,11 +212,11 @@ impl VM {
 					match call {
 						OPCODE_PUT_B => {
 							let b = self.data.pop().unwrap();
-							println!("{}", b);
+							print!("{}", b);
 						}
 						OPCODE_PUT_C => {
 							let c = self.data.pop().unwrap() as char;
-							println!("{}", c);
+							print!("{}", c);
 						}
 						_ => panic!("Unknown system call {}!", call)
 					}

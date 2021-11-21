@@ -2,7 +2,7 @@ use std::path::Path;
 use std::fs;
 use std::io::Read;
 use std::process::Command;
-use scriba::{Magna, SystemCall};
+use scriba::{Function, Magna, SystemCall};
 use scriba::Instruction;
 use crate::VM;
 
@@ -20,6 +20,7 @@ fn one_plus_one() {
 	let insts = [
 		Instruction::LoadIB(1),
 		Instruction::LoadIB(1),
+		Instruction::FuncB(Function::Add),
 		Instruction::Sys(SystemCall::PutB),
 		Instruction::LoadIB('\n' as u8),
 		Instruction::Sys(SystemCall::PutC)
@@ -35,10 +36,6 @@ fn one_plus_one() {
 		.args(["run", "--", path])
 		.output()
 		.unwrap();
-
-	if output.stderr.len() > 0 {
-		panic!(String::from_utf8_lossy(&output.stderr).to_string());
-	}
 
 	assert_eq!(output.stdout, b"2\n");
 

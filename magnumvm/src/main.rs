@@ -15,6 +15,7 @@ fn main() {
 		panic!("Expect single arg!");
 	}
 
-	let mut vm = VM::load(&args[0]).unwrap();
+	let mut vm = VM::load(&args[1]).unwrap();
+
 	vm.run().unwrap();
 }
