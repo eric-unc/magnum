@@ -1,5 +1,5 @@
 # MagnumVM
-MagnumVM is a custom process virtual machine. Made for [queer_hack 2021](https://queer-hack21.devpost.com/).
+MagnumVM is a custom process virtual machine. It was made for [queer_hack 2021](https://queer-hack21.devpost.com/), where it was given 1st Place (wow, nice). My submission is [here](https://devpost.com/software/magnumvm).
 
 <img src="gayrust.jpg" width="200">
 
@@ -69,7 +69,7 @@ Each instruction is 32-bits, with the first 8 being the opcode. Note all of this
 | Function | Function opcode | Description
 | :------ | :------ | :------
 | `add` | `0x00` | Addition.
-| `sub` | `0x01` | Subtracion.
+| `sub` | `0x01` | Subtraction.
 | `mul` | `0x02` | Multiplication.
 | `div` | `0x03` | Division.
 
@@ -82,6 +82,9 @@ Each instruction is 32-bits, with the first 8 being the opcode. Note all of this
 ## Technologies used
 * [Rust](https://github.com/rust-lang/rust)
   * [Cargo](https://github.com/rust-lang/cargo)
+
+## Demo
+* [Short demo](https://www.youtube.com/watch?v=oEGbv2iaQ0o)
 
 ## Authors
 1. Eric Schneider
